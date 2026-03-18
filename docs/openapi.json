@@ -1,0 +1,145 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Task Manager API",
+    "version": "1.0.0",
+    "description": "API para gestión de usuarios y tareas. Autenticación via JWT (Authorization: Bearer <token>)."
+  },
+  "servers": [{ "url": "http://localhost:3000" }],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" }
+    }
+  },
+  "paths": {
+    "/users": {
+      "post": {
+        "summary": "Crear usuario",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": { "type": "string", "format": "email" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Usuario creado" },
+          "400": { "description": "Datos inválidos" },
+          "409": { "description": "Usuario ya existe" }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "summary": "Login",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": { "type": "string", "format": "email" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token JWT",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "token": { "type": "string" } }
+                }
+              }
+            }
+          },
+          "400": { "description": "Datos inválidos" },
+          "401": { "description": "Credenciales inválidas" }
+        }
+      }
+    },
+    "/tasks": {
+      "get": {
+        "summary": "Listar tareas",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Lista de tareas" },
+          "401": { "description": "No autorizado" }
+        }
+      },
+      "post": {
+        "summary": "Crear tarea",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["title"],
+                "properties": { "title": { "type": "string" } }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Tarea creada" },
+          "400": { "description": "Datos inválidos" },
+          "401": { "description": "No autorizado" }
+        }
+      }
+    },
+    "/tasks/{id}": {
+      "put": {
+        "summary": "Actualizar tarea",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "in": "path", "name": "id", "required": true, "schema": { "type": "integer" } }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": { "title": { "type": "string" }, "completed": { "type": "boolean" } }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Tarea actualizada" },
+          "400": { "description": "Nada para actualizar" },
+          "401": { "description": "No autorizado" },
+          "404": { "description": "No encontrada" }
+        }
+      },
+      "delete": {
+        "summary": "Eliminar tarea",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "in": "path", "name": "id", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "204": { "description": "Eliminada" },
+          "401": { "description": "No autorizado" },
+          "404": { "description": "No encontrada" }
+        }
+      }
+    }
+  }
+}
+

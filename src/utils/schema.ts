@@ -1,7 +1,9 @@
-import { Pool } from 'pg';
+type SqlQueryable = {
+  query: (text: string) => Promise<unknown>;
+};
 
-export async function ensureSchema(pool: Pool): Promise<void> {
-  await pool.query(`
+export async function ensureSchema(db: SqlQueryable): Promise<void> {
+  await db.query(`
     CREATE TABLE IF NOT EXISTS users (
       id SERIAL PRIMARY KEY,
       email TEXT NOT NULL UNIQUE,
@@ -10,7 +12,7 @@ export async function ensureSchema(pool: Pool): Promise<void> {
     );
   `);
 
-  await pool.query(`
+  await db.query(`
     CREATE TABLE IF NOT EXISTS tasks (
       id SERIAL PRIMARY KEY,
       user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,

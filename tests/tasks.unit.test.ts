@@ -9,7 +9,7 @@ process.env.JWT_SECRET = process.env.JWT_SECRET ?? 'test-secret';
 process.env.DATABASE_URL =
   process.env.DATABASE_URL ?? 'postgres://user:pass@localhost:5432/db';
 
-jest.mock('../src/db', () => ({
+jest.mock('../src/utils/db', () => ({
   query: jest.fn(async () => ({ rows: [] })),
 }));
 

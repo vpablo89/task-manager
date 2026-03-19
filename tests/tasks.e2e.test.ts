@@ -1,11 +1,12 @@
 import request from 'supertest';
-import { Pool } from 'pg';
-import { ensureSchema } from '../src/schema';
+import { Client } from 'pg';
+import { ensureSchema } from '../src/utils/schema';
+import { closePool } from '../src/utils/db';
 
 const dbUrl = process.env.DATABASE_URL_TEST ?? process.env.DATABASE_URL;
 
 (dbUrl ? describe : describe.skip)('POST /tasks (E2E)', () => {
-  let pool: Pool;
+  let setupClient: Client;
   let app: any;
 
   beforeAll(async () => {
@@ -15,9 +16,10 @@ const dbUrl = process.env.DATABASE_URL_TEST ?? process.env.DATABASE_URL;
 
     const url = process.env.DATABASE_URL_TEST as string;
 
-    pool = new Pool({ connectionString: url });
+    setupClient = new Client({ connectionString: url });
     try {
-      await ensureSchema(pool);
+      await setupClient.connect();
+      await ensureSchema(setupClient);
     } catch (e: any) {
       const msg = e?.code === 'ECONNREFUSED'
         ? 'PostgreSQL no está accesible. Revisa DATABASE_URL_TEST/DATABASE_URL.'
@@ -31,12 +33,13 @@ const dbUrl = process.env.DATABASE_URL_TEST ?? process.env.DATABASE_URL;
   });
 
   beforeEach(async () => {
-    await pool.query('TRUNCATE TABLE tasks RESTART IDENTITY CASCADE;');
-    await pool.query('TRUNCATE TABLE users RESTART IDENTITY CASCADE;');
+    await setupClient.query('TRUNCATE TABLE tasks RESTART IDENTITY CASCADE;');
+    await setupClient.query('TRUNCATE TABLE users RESTART IDENTITY CASCADE;');
   });
 
   afterAll(async () => {
-    await pool.end();
+    await setupClient.end();
+    await closePool();
   });
 
   it('create user -> login -> create task -> get tasks', async () => {

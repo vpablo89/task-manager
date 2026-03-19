@@ -51,6 +51,28 @@ Nota: si cambias `PORT`, también ajusta `docs/openapi.json` para que Swagger mu
 
 ## Tests
 
+### Postman (probar endpoints manualmente)
+
+La colección de Postman está en:
+
+- `postman/task-manager.postman_collection.json`
+
+Pasos:
+1. Ejecuta el servidor (por defecto `PORT=3000`): `npm run dev`
+2. Abre Postman
+3. Importa la colección: `File -> Import -> Upload Files` y selecciona `postman/task-manager.postman_collection.json`
+4. En la colección verás las variables:
+   - `baseUrl` (por defecto `http://localhost:3000`)
+   - `token` (se setea al correr `POST /login`)
+   - `taskId` (se setea al correr `POST /tasks (sets taskId)`)
+5. Ejecuta en este orden para el flujo completo:
+   - `POST /users`
+   - `POST /login (sets token)`
+   - `POST /tasks (sets taskId)`
+   - `GET /tasks`
+
+### Jest (unit/e2e)
+
 ```bash
 npm test
 ```

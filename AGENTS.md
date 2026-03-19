@@ -163,6 +163,21 @@ README
 
 Postman collection
 
+Swagger UI (OpenAPI)
+
+- Swagger UI se sirve en:
+  - `GET /api-docs` (landing con botón para alternar idioma)
+  - `GET /api-docs/es` (español)
+  - `GET /api-docs/en` (inglés)
+- Fuentes OpenAPI:
+  - `docs/openapi.json`
+  - `docs/openapi.en.json`
+
+Postman
+
+- Usar la colección: `postman/task-manager.postman_collection.json`
+- Respetar variables de colección (`baseUrl`, `token`, `taskId`) para reproducir el flujo completo.
+
 Formato:
 
 POST /tasks
@@ -205,6 +220,9 @@ Usar variables de entorno (.env)
 Separar config
 
 Logs claros (console o logger)
+
+- La configuración de `pino-http` debe vivir en `src/middlewares/requestLogger.ts`
+- `src/app.ts` debe evitar lógica inline pesada para logs; idealmente solo registrar `requestLogger`.
 
 Commits descriptivos
 

@@ -1,50 +1,54 @@
 # Task Manager API
 
-REST API built with **Node.js + Express + TypeScript + PostgreSQL (Supabase)**.
+Este README está en español.
 
-## Requirements
+English version: `README.en.md`
 
-- Node.js (compatible with your current installation)
-- A Supabase project with PostgreSQL enabled (including the **transaction pooler**)
-- Environment variables in `.env` (use `.env.example` as a template)
+API REST en **Node.js + Express + TypeScript + PostgreSQL (Supabase)**.
 
-## Setup
+## Requisitos
 
-1. Create the `.env` file based on `.env.example`.
-2. Make sure you configure:
+- Node.js (compatible con tu instalación actual)
+- Un proyecto en Supabase con PostgreSQL habilitado (incluyendo el **transaction pooler**)
+- Variables en `.env` (usa `.env.example` como plantilla)
+
+## Configuración
+
+1. Crea el archivo `.env` basado en `.env.example`.
+2. Asegúrate de tener configurado:
    - `PORT`
-   - `DATABASE_URL` and `DATABASE_URL_TEST`
+   - `DATABASE_URL` y `DATABASE_URL_TEST`
    - `JWT_SECRET`
 
-## Run the server
+## Ejecutar el servidor
 
-1. Install dependencies:
+1. Instala dependencias:
    ```bash
    npm install
    ```
-2. Start in development mode:
+2. Levanta en modo desarrollo:
    ```bash
    npm run dev
    ```
-3. Quick health check:
+3. Verificación rápida:
    - `GET /health`
 
-## Swagger UI (documentation)
+## Swagger UI (documentación)
 
-Swagger UI is served at:
+La documentación Swagger UI está montada en:
 
 - `http://localhost:3000/api-docs`
 
-It includes language toggle (ES/EN) with a button:
+Incluye alternancia de idioma (ES/EN) con un botón:
 
 - `http://localhost:3000/api-docs/es`
 - `http://localhost:3000/api-docs/en`
 
-Steps to open it in the browser:
+Pasos para verla en el navegador:
 
-1. Run the server with `npm run dev`
-2. Open `http://localhost:3000/api-docs`
-3. In Swagger, use the endpoints:
+1. Ejecuta el servidor con `npm run dev`
+2. Abre `http://localhost:3000/api-docs`
+3. Dentro de Swagger, usa los endpoints:
    - `POST /users`
    - `POST /login`
    - `GET /tasks`
@@ -52,25 +56,25 @@ Steps to open it in the browser:
    - `PUT /tasks/:id`
    - `DELETE /tasks/:id`
 
-Note: if you change `PORT`, update the server URL in the OpenAPI specs (see `docs/openapi.json` and `docs/openapi.en.json`) so Swagger “Try it out” uses the correct base URL.
+Nota: si cambias `PORT`, también ajusta la URL base en los specs de OpenAPI (ver `docs/openapi.json` y `docs/openapi.en.json`) para que Swagger “Try it out” use la URL correcta.
 
 ## Tests
 
-### Postman (manual endpoint testing)
+### Postman (probar endpoints manualmente)
 
-The Postman collection is at:
+La colección de Postman está en:
 
 - `postman/task-manager.postman_collection.json`
 
-Steps:
-1. Run the server (default `PORT=3000`): `npm run dev`
-2. Open Postman
-3. Import the collection: `File -> Import -> Upload Files` and select `postman/task-manager.postman_collection.json`
-4. In the collection you will see variables:
-   - `baseUrl` (default `http://localhost:3000`)
-   - `token` (set by `POST /login`)
-   - `taskId` (set by `POST /tasks (sets taskId)`)
-5. Run in this order to test the full flow:
+Pasos:
+1. Ejecuta el servidor (por defecto `PORT=3000`): `npm run dev`
+2. Abre Postman
+3. Importa la colección: `File -> Import -> Upload Files` y selecciona `postman/task-manager.postman_collection.json`
+4. En la colección verás las variables:
+   - `baseUrl` (por defecto `http://localhost:3000`)
+   - `token` (se setea al correr `POST /login`)
+   - `taskId` (se setea al correr `POST /tasks (sets taskId)`)
+5. Ejecuta en este orden para el flujo completo:
    - `POST /users`
    - `POST /login (sets token)`
    - `POST /tasks (sets taskId)`

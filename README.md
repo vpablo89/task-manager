@@ -35,6 +35,11 @@ La documentación Swagger UI está montada en:
 
 - `http://localhost:3000/api-docs`
 
+Incluye alternancia de idioma (ES/EN) con un botón:
+
+- `http://localhost:3000/api-docs/es`
+- `http://localhost:3000/api-docs/en`
+
 Pasos para verla en el navegador:
 
 1. Ejecuta el servidor con `npm run dev`
